@@ -1,0 +1,16 @@
+<div class="column-item person" id="person-id" onclick="">
+	<div class="column-item-content"><div class="person-details"><h3 class="person-name">Person Name</h3><span class="person-title">Person Title 1 / <br>Person Title 2</span></div>	</div></div><style>.column-item {	float: left;	position: relative;	width: 280px;	height: 280px;}
+
+.column-item-content {	position: absolute;
+	top: 0;	left: 0;	right: 0;	bottom: 0;	cursor: default;}.person {	background-position: center center;	background-repeat: no-repeat;	background-size: cover;	-webkit-tap-highlight-color: transparent;
+}
+
+#person-id{
+	background-image: url(1.jpg);}.person .column-item-content {	text-align: center;	background: #2f363b;	opacity: 0;	-webkit-transition: opacity 500ms;	transition: opacity 500ms;}
+
+.person .column-item-content:before {	content: "";
+	display: inline-block;	height: 100%;	vertical-align: middle;	width: 1px;	margin-right: -4px;}.person:hover .column-item-content{opacity:1;}.person-details {	font-family: 'Montserrat', sans-serif;	color: white;	display: inline-block;
+	vertical-align: middle;	width: 90%;	-webkit-transform: translate3d(0,10px,0);	transform: translate3d(0,10px,0);	-webkit-transition: 500ms;	transition: 500ms;}.person:hover .person-details {	-webkit-transform: none;
+	transform: none;}
+.person-name {	font-size: 25px;	text-transform: uppercase;	word-spacing: 99px;	letter-spacing: -1px;	line-height: 1;	padding-top: .25em;}
+.person-title {	font-size: 10px;	font-weight: 400;	max-width: 80%;	display: block;	margin: 0 auto;}</style>
