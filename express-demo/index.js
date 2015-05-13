@@ -57,6 +57,98 @@ app.delete('/user', function (req, res) {
 /* end Basic routing tutorial */
 
 
+/* Route handling examples */
+
+// A route can be handled using a single callback function:
+app.get('/example/a',function(req, res){
+  res.send('Hello from A!');
+});
+
+// A route can be handled using a more than one callback function (make sure to specify the next object):
+app.get('/example/b',function(req,res,next){
+  console.log('response will be send by the next function...');
+  next();
+}, function(req,res){
+  res.send('Hello from B!');
+});
+
+// A route can be handled using an array of callback functions:
+var cb0 = function (req, res, next) {
+  console.log('CB0');
+  next();
+}
+
+var cb1 = function (req, res, next) {
+  console.log('CB1');
+  next();
+}
+
+var cb2 = function (req, res) {
+  res.send('Hello from C!');
+}
+
+app.get('/example/c', [cb0, cb1, cb2]);
+
+// A route can be handled using a combination of array of functions and independent functions:
+
+var cb0 = function (req, res, next) {
+  console.log('CB0');
+  next();
+}
+
+var cb1 = function (req, res, next) {
+  console.log('CB1');
+  next();
+}
+
+app.get('/example/d', [cb0, cb1], function (req, res, next) {
+  console.log('response will be sent by the next function ...');
+  next();
+}, function (req, res) {
+  res.send('Hello from D!');
+});
+
+
+/* Response methods */
+/*
+res.download()	Prompt a file to be downloaded.
+res.end()	End the response process.
+res.json()	Send a JSON response.
+res.jsonp()	Send a JSON response with JSONP support.
+res.redirect()	Redirect a request.
+res.render()	Render a view template.
+res.send()	Send a response of various types.
+res.sendFile	Send a file as an octet stream.
+res.sendStatus()	Set the response status code and send its string representation as the response body.
+*/
+
+
+/* App Route
+Chainable route handlers for a route path can be created using app.route().
+Since the path is specified at a single location, it helps to create modular routes
+and reduce redundancy and typos. For more information on routes, see Router() documentation.
+Here is an example of chained route handlers defined using app.route().
+*/
+app.route('/book')
+  .get(function(req,res){
+    res.send('Get a random book');
+  })
+  .post(function(req,res){
+    res.send('Add a book');
+  })
+  .put(function(req,res){
+    res.send('Update the book');
+  });
+/* End routing examples */
+
+/*
+load the router module in the app:
+*/
+var birds = require('./birds');
+app.use('/birds', birds);
+
+
+
 
 
 var server = app.listen(3000, function(){
