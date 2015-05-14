@@ -147,10 +147,83 @@ load the router module in the app:
 var birds = require('./birds');
 app.use('/birds', birds);
 
+/*
+Error handling
+
+Define error-handling middleware like other middleware,
+except with four arguments instead of three,
+specifically with the signature (err, req, res, next)):
+You define error-handling middleware last, after other app.use() and routes calls; for example:
+
+Responses from within the middleware are completely arbitrary.
+You may wish to respond with an HTML error page, a simple message,
+a JSON string, or anything else you prefer.
+
+For organizational (and higher-level framework) purposes,
+you may define several error-handling middleware,
+much like you would with regular middleware.
+For example suppose you wanted to define an error-handler
+for requests made via XHR, and those without, you might do:
+
+*/
+
+var bodyParser = require('body-parser');
+var methodOverride = require('method-override');
+
+app.use(bodyParser());
+app.use(methodOverride());
+app.use(logErrors);
+app.use(clientErrorHandler);
+app.use(errorHandler);
+app.use(function(err, req, res, next) {
+  // logic
+});
+
+function logErrors(err, req, res, next) {
+  console.error(err.stack);
+  next(err);
+}
+
+function clientErrorHandler(err, req, res, next) {
+  if (req.xhr) {
+    res.status(500).send({ error: 'Something blew up!' });
+  } else {
+    next(err);
+  }
+}
+
+function errorHandler(err, req, res, next) {
+  res.status(500);
+  res.render('error', { error: err });
+}
 
 
+/*
+Adding database connectivity capability to Express apps is just a matter of
+loading an appropriate Node.js driver for the database in your app.
+This document briefly explains how to add and use some of the most popular
+Node modules for database systems in your Express app:
+*/
 
+var mysql      = require('mysql');
+var connection = mysql.createConnection({
+  host     : 'localhost',
+  user     : 'root',
+  password : '',
+  database : 'compiac'
+});
 
+connection.connect();
+
+connection.query('SELECT * FROM `wp_options`', function(err, rows, fields) {
+  if (err) throw err;
+  for(i=0;i<rows.length;i++) {
+    console.log(rows[i].option_name + " - " + rows[i].option_value);
+  }
+  //console.log('The solution is: ', rows[0].option_name);
+});
+
+connection.end();
 var server = app.listen(3000, function(){
 
   // this is how we get the address host and port
