@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Tuts+ Canvas Essentials</title>
+        <meta name="description" content="Lesson X - ">
+        <meta name="viewport" content="width=device-width">
+        <style>
+            html, body{
+                height: 100%;
+            }
+            body{
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 1em;
+                padding: 0 15px;
+                background-color: #F8F7ED;
+                color: #423A33;
+            }
+            canvas{
+                display: block;
+                border: dotted 1px #423A33;
+                background-color: #FFFFFF;
+
+                -moz-user-select: -moz-none;
+                -khtml-user-select: none;
+                -webkit-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+        </style>
+        <!-- get explorer canvas -->
+    </head>
+    <body onload="TP.init()">
+
+        <h3>Lesson 8 - Audio</h3>
+        <audio id="audio" src="Rising.mp3" preload controls></audio>
+        <canvas id="canvas" width="1000" height="600" unselectable="on">
+            <p>Sorry, but your browser doesn't support the canvas element</p><!-- show with mac preview -->
+        </canvas>        
+        <script type="text/javascript">
+
+            //Our code
+            window.TP = {};
+
+            TP.init = function(){
+                var self = this;
+
+                this.canvas = document.getElementById("canvas");
+                this.width = this.canvas.width;
+                this.height = this.canvas.height;
+                this.ctx = canvas.getContext("2d");
+
+                this.setupAudio();
+            }
+
+            TP.setupAudio = function() {
+                var self = this;
+                var audioElement = document.getElementById('audio');
+
+                var audioContext = new webkitAudioContext();
+                this.analyser = audioContext.createAnalyser();
+                
+                var source = audioContext.createMediaElementSource(audioElement);
+                source.connect(this.analyser);
+
+                this.analyser.connect(audioContext.destination);
+
+                setInterval(function(){
+                    self.draw();
+                }, 33);
+            }
+
+            TP.draw = function() {
+                var self = this;
+
+                // New typed array for the raw frequency data
+                var freqData = new Uint8Array(this.analyser.frequencyBinCount);
+
+                // Put the raw frequency into the newly created array
+                this.analyser.getByteFrequencyData(freqData);
+
+                // Clear the canvas
+                this.ctx.clearRect(0, 0, this.width, this.height);
+
+                // This loop draws all the bars
+                for (var i = 0; i < freqData.length; i++) {
+                    // Work out the height of the current bar
+                    // by getting the current frequency
+                    var magnitude = freqData[i];
+                    // Draw a bar from the bottom up (cause for the "-magnitude")
+                    this.ctx.fillRect(i, this.height, 1, -magnitude * 2);
+                };
+            }
+
+            // http://jcla1.com/blog/2012/03/11/web-audio-api-overview-part1/
+            // http://jcla1.com/blog/2012/04/06/web-audio-api-overview-part2/
+            // See http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+            // http://www.binaura.net/stc/fp/?x=entry:entry120901-200844
+        </script>
+    </body>
+</html>
+

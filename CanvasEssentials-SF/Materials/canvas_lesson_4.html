@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Tuts+ Canvas Essentials</title>
+        <meta name="description" content="Lesson 4 - Advanced Shapes">
+        <meta name="viewport" content="width=device-width">
+        <style>
+            html, body{
+                height: 100%;
+            }
+            body{
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 1em;
+                padding: 0 15px;
+                background-color: #F8F7ED;
+                color: #423A33;
+            }
+            canvas{
+                position: absolute;
+                border: dotted 1px #423A33;
+                background-color: #FFFFFF;
+
+                -moz-user-select: -moz-none;
+                -khtml-user-select: none;
+                -webkit-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+        </style>
+        <!-- get explorer canvas -->
+    </head>
+    <body onload="TP.init()">
+
+        <h3>Lesson 4 - Advanced Shapes</h3>
+        <canvas id="canvas" width="450" height="600" unselectable="on">
+            <p>Sorry, but your browser doesn't support the canvas element</p><!-- show with mac preview -->
+        </canvas>
+
+        <script type="text/javascript">
+            TP = {};
+
+            TP.init = function(){
+                this.canvas = document.getElementById('canvas');
+                this.ctx = canvas.getContext('2d');
+                this.width = canvas.width;
+                this.height = canvas.height;
+
+                //this.drawCurves(this.ctx);
+                //this.drawAndFill(this.ctx);
+                this.drawGradients(this.ctx);
+                this.drawText(this.ctx);
+
+                canvas.onclick = function(e){
+                    console.log(e.layerX, e.layerY);
+                };
+            }
+
+            TP.drawCurves = function(ctx){
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+
+                ctx.beginPath();
+                ctx.moveTo(90, 150);
+                ctx.quadraticCurveTo(190, 20, 290, 150);
+                //ctx.closePath();
+                ctx.lineWidth = 15;
+                ctx.strokeStyle = '#990000';
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.moveTo(50, 300);
+                ctx.bezierCurveTo(140, 150, 388, 150, 300, 300);
+                //ctx.closePath();
+                ctx.lineWidth = 15;
+                ctx.strokeStyle = '#009900';
+                ctx.stroke();
+            }
+
+            TP.drawAndFill = function(ctx){
+
+                ctx.beginPath();
+                ctx.moveTo(100, 320);
+                ctx.lineTo(90, 492);
+                ctx.lineTo(320, 430);
+                ctx.lineTo(100, 320);
+                ctx.moveTo(125, 360);
+                ctx.lineTo(255, 425);
+                ctx.lineTo(120, 455);
+                ctx.lineTo(125, 360);
+                ctx.closePath();
+
+                //http://blogs.adobe.com/webplatform/2013/01/30/winding-rules-in-canvas/
+
+                ctx.fillStyle = '#009900';
+                ctx.fill();
+                ctx.lineWidth = 10;
+                ctx.strokeStyle = '#990000';
+                ctx.stroke();
+            }
+
+            TP.drawGradients = function(ctx){
+                ctx.beginPath();
+                ctx.rect(
+                    20, 20, this.width - 40, this.height/2 - 40
+                );
+                var grad = ctx.createLinearGradient(
+                    20, 20, this.width - 20, this.height/2 - 20
+                );
+                ctx.closePath();
+                grad.addColorStop(0, '#000000');
+                grad.addColorStop(1, '#aa0000');
+                ctx.fillStyle = grad;
+                ctx.fill();
+
+                ctx.beginPath();
+                ctx.rect(
+                    20, this.height/2, this.width - 40, this.height/2 - 20
+                );
+                var radGrad = ctx.createRadialGradient(
+                    90, 360, 10, 90, 360, 300
+                );
+                ctx.closePath();
+                radGrad.addColorStop(0, '#ffffff');
+                radGrad.addColorStop(1, '#aa0000');
+                ctx.fillStyle = radGrad;
+                ctx.fill();
+            }
+
+            TP.drawText = function(ctx){
+                ctx.fillStyle = '#660000';
+                //ctx.textAlign = 'center';
+                //ctx.textBaseline = 'top';
+                ctx.font = 'italic 40px Arial';
+                console.log(ctx.measureText('Hello World!'));
+                ctx.fillText('Hello World!', 50, 400);
+            }
+
+        </script>
+    </body>
+</html>
+

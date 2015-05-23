@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Tuts+ Canvas Essentials</title>
+        <meta name="description" content="Lesson 10 - Composites">
+        <meta name="viewport" content="width=device-width">
+        <style>
+            html, body{
+                height: 100%;
+            }
+            body{
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 1em;
+                padding: 0 15px;
+                background-color: #F8F7ED;
+                color: #423A33;
+            }
+            canvas{
+                position: absolute;
+                border: dotted 1px #423A33;
+                background-color: #FFFFFF;
+
+                -moz-user-select: -moz-none;
+                -khtml-user-select: none;
+                -webkit-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+        </style>
+        <!-- get explorer canvas -->
+    </head>
+    <body onload="TP.init()">
+
+        <h3>Lesson 10 - Composites</h3>
+        <canvas id="canvas" width="450" height="600" unselectable="on">
+            <p>Sorry, but your browser doesn't support the canvas element</p><!-- show with mac preview -->
+        </canvas>
+
+        <script type="text/javascript">
+            window.TP = {};
+
+            TP.init = function(){
+                var self = this;
+
+                this.canvas = document.getElementById("canvas");
+                this.width = this.canvas.width;
+                this.height = this.canvas.height;
+                this.ctx = canvas.getContext("2d");
+
+                this.draw(this.ctx);
+            }
+
+            TP.draw = function(ctx){
+                //Clipping
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(0, 0, 200, 0, 2 * Math.PI, false);
+                ctx.clip();
+
+                //Shadow
+                ctx.beginPath();
+                ctx.rect(50, 40, 220, 100);
+                ctx.fillStyle = '#990000';
+                ctx.shadowColor = '#999';
+                ctx.shadowBlur = 10;
+                ctx.shadowOffsetX = 5;
+                ctx.shadowOffsetY = 5;
+                ctx.fill();
+
+                //cancel clipping
+                ctx.restore();
+                ctx.fillStyle = '#000099';
+                ctx.fillRect(50, 200, 220, 100);
+
+                //operations
+                /*source-atop, source-in, source-out, source-over, destination-atop, destination-in, destination-out, destination-over, lighter, darker, xor, and copy*/
+                ctx.globalCompositeOperation = 'source-over';
+
+                //alpha
+                //ctx.globalAlpha = 0.5;
+
+                ctx.beginPath();
+                ctx.arc(260, 200, 75, 0, 2 * Math.PI, false);
+                ctx.fillStyle = '#009900';
+                ctx.fill();
+                
+            }
+
+
+        </script>
+    </body>
+</html>
+

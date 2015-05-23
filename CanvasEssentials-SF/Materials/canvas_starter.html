@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Tuts+ Canvas Essentials</title>
+        <meta name="description" content="Lesson X - ">
+        <meta name="viewport" content="width=device-width">
+        <style>
+            html, body{
+                height: 100%;
+            }
+            body{
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 1em;
+                padding: 0 15px;
+                background-color: #F8F7ED;
+                color: #423A33;
+            }
+            canvas{
+                position: absolute;
+                border: dotted 1px #423A33;
+                background-color: #FFFFFF;
+
+                -moz-user-select: -moz-none;
+                -khtml-user-select: none;
+                -webkit-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+        </style>
+        <!-- get explorer canvas -->
+    </head>
+    <body onload="TP.init()">
+
+        <h3>Lesson X - </h3>
+        <canvas id="canvas" width="450" height="600" unselectable="on">
+            <p>Sorry, but your browser doesn't support the canvas element</p><!-- show with mac preview -->
+        </canvas>
+
+        <script type="text/javascript">
+            window.TP = {};
+
+            TP.init = function(){
+                var self = this;
+
+                this.canvas = document.getElementById("canvas");
+                this.width = this.canvas.width;
+                this.height = this.canvas.height;
+                this.ctx = canvas.getContext("2d");
+
+            }
+
+
+        </script>
+    </body>
+</html>
+

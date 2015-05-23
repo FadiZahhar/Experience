@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Tuts+ Canvas Essentials</title>
+    <meta name="description" content="Lesson 3 - Shapes">
+    <meta name="viewport" content="width=device-width">
+    <style>
+        body{
+            font-family: Arial, Helvetica, sans-serif;
+            padding: 10px; margin: 0;
+            background-color: #F8F7ED;
+            color: #423A33;
+        }
+        canvas{
+            border: dotted 1px #423A33;
+            background-color: #FFFFFF;
+        }
+    </style>
+    <script>
+    	window.TP = {};
+
+    	TP.init = function(){
+            var self = this;
+
+    		this.canvas = document.getElementById('canvas');
+    		this.ctx = canvas.getContext('2d');
+    		this.width = canvas.width;
+            this.height = canvas.height;
+            this.drawLines(this.ctx);
+            this.drawRectangle(this.ctx);
+            this.drawCircle(this.ctx);
+
+            this.canvas.onclick = function(){
+                self.clearCanvas();
+            }
+    	}
+        TP.clearCanvas = function(){
+            this.ctx.clearRect(200, 200, this.width, this.height);
+        }
+    	TP.drawLines = function(ctx){
+    		// butt line cap (top line)
+            ctx.beginPath();
+            ctx.moveTo(50, this.canvas.height / 2);
+            ctx.lineTo(this.canvas.width-50, this.canvas.height / 2);
+            ctx.lineTo(200, 50);
+            ctx.lineWidth = 20;
+            ctx.strokeStyle = '#990000';
+            //ctx.lineCap = 'butt';
+            ctx.lineCap = 'round';
+            //ctx.lineCap = 'square';
+            //ctx.lineJoin = 'miter';
+            //ctx.lineJoin = 'round';
+            ctx.lineJoin = 'bevel';
+
+            ctx.closePath();
+            ctx.fillStyle = '#660000';
+            ctx.fill();
+
+            ctx.stroke();
+            
+    	}
+
+        TP.drawRectangle = function(ctx){
+            ctx.beginPath();
+            ctx.rect(70, 320, 200, 160);
+            ctx.fillStyle = '#000099';
+            ctx.fill();
+            ctx.lineWidth = 10;
+            ctx.strokeStyle = '#000066';
+            ctx.stroke();
+        }
+
+        TP.drawCircle = function(ctx){
+            ctx.beginPath();
+            ctx.arc(this.width/2, this.height/2, 70, 0, 0.5 * Math.PI, false);
+            ctx.lineTo(this.width/2, this.height/2);
+            ctx.closePath();
+            ctx.fillStyle = 'rgba(0, 128, 0, 0.5)';
+            ctx.fill();
+            ctx.lineWidth = 5;
+            ctx.strokeStyle = '#006600';
+            ctx.stroke();
+        }
+
+    </script>
+</head>
+
+<body onload="TP.init()">
+	<h3>Canvas Essentials - Lesson 3</h3>
+	<canvas id="canvas" width="380" height="520">
+		<p>Your browser does not support this content</p>
+	</canvas>
+</body>
+</html>
+
+
+
+
+
+

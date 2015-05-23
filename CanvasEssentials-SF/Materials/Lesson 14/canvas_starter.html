@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Tuts+ Canvas Essentials</title>
+        <meta name="description" content="Lesson X - ">
+        <meta name="viewport" content="width=device-width">
+        <style>
+            html, body{
+                height: 100%;
+            }
+            body{
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 1em;
+                padding: 0 15px;
+                background-color: #F8F7ED;
+                color: #423A33;
+            }
+            canvas{
+                position: absolute;
+                border: dotted 1px #423A33;
+                background-color: #FFFFFF;
+
+                -moz-user-select: -moz-none;
+                -khtml-user-select: none;
+                -webkit-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+        </style>
+        <!-- get explorer canvas -->
+    </head>
+    <body onload="TP.init()">
+
+        <h3>Lesson X - </h3>
+        <canvas id="canvas" width="450" height="600" unselectable="on">
+            <p>Sorry, but your browser doesn't support the canvas element</p><!-- show with mac preview -->
+        </canvas>
+        <script src="easeljs-0.6.1.min.js"></script>
+        <script type="text/javascript">
+            window.TP = {};
+
+            TP.init = function(){
+                var self = this;
+                this.stage = new createjs.Stage("canvas");
+
+                this.container = new createjs.Container();
+                this.stage.addChild(this.container);
+                this.draw();
+            }
+
+            TP.draw = function() {
+                var self = this;
+
+                var circle = new createjs.Shape();
+                circle.graphics.beginFill("#990000").drawCircle(0, 0, 50);
+                circle.x = 100;
+                circle.y = 100;
+                this.container.addChild(circle);
+
+                var rect = new createjs.Shape();
+                rect.graphics.beginFill("#009900").drawRoundRect (0, 0, 100, 100, 8);
+                rect.x = 100;
+                rect.y = 100;
+                rect.name = 'rect';
+                this.container.addChild(rect);
+
+                //this.container.x = 100;
+
+                this.stage.update();
+
+                circle.addEventListener("click", function(e) {
+                    console.log(e)
+                });
+
+                createjs.Ticker.addEventListener("tick", function(e) {
+                    self.tick(e);
+                });
+            }
+
+            TP.tick = function(e) {
+                var rect = this.container.getChildByName('rect');
+                rect.x += e.delta/1000*100;
+                this.stage.update();
+                console.log("total time: "+createjs.Ticker.getTime());
+            }
+
+
+        </script>
+    </body>
+</html>
+

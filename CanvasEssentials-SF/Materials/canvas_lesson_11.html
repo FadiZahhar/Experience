@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Tuts+ Canvas Essentials</title>
+        <meta name="description" content="Lesson 5 - Object Oriented">
+        <meta name="viewport" content="width=device-width">
+        <style>
+            html, body{
+                height: 100%;
+            }
+            body{
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 1em;
+                padding: 0 15px;
+                background-color: #F8F7ED;
+                color: #423A33;
+            }
+            canvas{
+                display: block;
+                border: dotted 1px #423A33;
+                background-color: #FFFFFF;
+
+                -moz-user-select: -moz-none;
+                -khtml-user-select: none;
+                -webkit-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+        </style>
+        <!-- get explorer canvas -->
+    </head>
+    <body onload="TP.init()">
+
+        <h3>Lesson 5 - Object Oriented</h3>
+        <button onclick="TP.play();">Play</button> <button onclick="TP.pause();">Pause</button>
+        <canvas id="canvas" width="450" height="600" unselectable="on">
+            <p>Sorry, but your browser doesn't support the canvas element</p><!-- show with mac preview -->
+        </canvas>
+
+        <script type="text/javascript">
+            // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+            // http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
+            // requestAnimationFrame polyfill by Erik Möller. fixes from Paul Irish and Tino Zijdel
+            // MIT license
+            (function() {
+                var lastTime = 0;
+                var vendors = ['ms', 'moz', 'webkit', 'o'];
+                for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+                    window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+                    window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame'] 
+                                               || window[vendors[x]+'CancelRequestAnimationFrame'];
+                }
+             
+                if (!window.requestAnimationFrame)
+                    window.requestAnimationFrame = function(callback, element) {
+                        var currTime = new Date().getTime();
+                        var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+                        var id = window.setTimeout(function() { callback(currTime + timeToCall); }, 
+                          timeToCall);
+                        lastTime = currTime + timeToCall;
+                        return id;
+                    };
+             
+                if (!window.cancelAnimationFrame)
+                    window.cancelAnimationFrame = function(id) {
+                        clearTimeout(id);
+                    };
+            }());
+
+
+            //Our code
+
+            TP = {};
+
+            TP.init = function(){
+                var self = this;
+
+                this.canvas = document.getElementById('canvas');
+                this.ctx = canvas.getContext('2d');
+                this.width = canvas.width;
+                this.height = canvas.height;
+                this.shapeList = [];
+                this.animId = null;
+
+                canvas.onclick = function(e){
+                    var square = new TP.Square(
+                        e.layerX, e.layerY, 40, self.ctx
+                    );
+                    self.shapeList.push(square);
+                };
+
+                this.animate();
+            }
+
+            TP.animate = function(){
+                var self = this;
+                this.render();
+                this.animId = requestAnimationFrame(function(){
+                    self.animate();
+                });
+            }
+
+            TP.play = function(){
+                var self = this;
+                if (!this.animId) {
+                    this.animId = requestAnimationFrame(function(){
+                        self.animate();
+                    });
+                }
+                
+            }
+
+            TP.pause = function(){
+                cancelAnimationFrame(this.animId);
+                this.animId = null;
+            }
+
+            TP.render = function(){
+                this.ctx.clearRect(0, 0, this.width, this.height);
+                for(index in this.shapeList){
+                    this.shapeList[index].animate();
+                }
+            }
+
+            TP.Square = function(x, y, size, ctx){
+                this.x = x;
+                this.y = y;
+                this.size = size;
+                this.ctx = ctx;
+                this.color = '#'+Math.floor(
+                    Math.random()*16777215
+                ).toString(16);
+            }
+
+            TP.Square.prototype.render = function(){
+                this.ctx.beginPath();
+                this.ctx.rect(
+                    this.x, this.y, this.size, this.size
+                );
+                this.ctx.fillStyle = this.color;
+                this.ctx.fill();
+                this.ctx.closePath();
+            }
+
+            TP.Square.prototype.move = function(newX, newY){
+                this.x = newX;
+                this.y = newY;
+            }
+
+            TP.Square.prototype.animate = function(){
+                this.move(this.x - 1, this.y - 1);
+                this.render();
+            }
+
+        </script>
+    </body>
+</html>
+
